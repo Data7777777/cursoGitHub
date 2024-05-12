@@ -221,3 +221,96 @@ afectan al usuario.
 - **test:** para tests o refactorización de uno ya existente.
 #### \*Comando:
 - **git switch -c:** Se utiliza para crear una nueva rama y cambiar a ella en un solo paso. La opción -c es una abreviatura de --create, que indica a Git que debe crear la rama si aún no existe.
+# Clase 7
+### ¿En qué caso deshacemos cambios?
+- Dejó de funcionar el proyecto.
+- Queremos recuperar una parte del código que eliminamos.
+- Queremos recuperar archivos que eliminamos.
+## Comandos destructivos y no destructivos
+Los comandos destructivos afectan el historial de commits realizado, sin embargo los comandos no destructivos trabajan en base al historial sin afectarlo.
+#### \*Comandos destructivos(Usarlos con preacaución y cuando se sabe totalmente lo que se hace)
+- **git reset:** Posee dos opciones:
+* **soft:** Mantiene los cambios que ocurrieron antes de hacer un commit. Nos permite deshacer cambios volviendo al punto que le indiquemos con la posibilidad de volver a puntos futuros.
+* **hard:** De la misma manera que el soft sólo que en este caso ya no se nos permite volver a las versiones futuras.
+**Ejemplo:** 
+- **git reset --hard (hash del commit a retornar)**
+**Nota:** También se le pueden pasar el parámetro de cuántos commits queremos retroceder a partir del HEAD:
+**git reset --soft HEAD~4:** Retrocede 4 commits despues del HEAD.
+## Comandos no destructivos
+- **git revert:** Revierte los cambios en base a los commits que se introdujeron, no borra el historial, sino que agrega un nuevo commit con los cambios revertidos.
+**Ejemplo:** 
+- **git revert HEAD ~5:** Crea un nuevo comando que deshace los cambios realizados en el quinto commit anterior al HEAD.
+- **git checkout:** Nos permite recuperar código específico de commits.
+**Extendiéndonos con el comando git checkout:**
+El comando git checkout no es destructivo en sí mismo, pero puede sobrescribir cambios locales no guardados, por lo que se debe usar con cuidado.
+El comando git checkout se utiliza principalmente para dos cosas:
+- **Cambiar entre ramas o commits:** Puedes usar git checkout seguido del nombre de una rama para cambiar a esa rama. También puedes usar git checkout seguido de un hash de commit para mover tu HEAD a ese commit específico. Ejemplo para cambiar a una rama:
+#### \*Comandos:
+- **git checkout nombre-de-la-rama**
+- **git checkout (hash del commit)**.
+- **git checkout nombre-del-archivo:** Este comando nos sirve para revertir el archivo que especificamos al último commit que hicimos.
+
+# Clase 7(Última clase de Git)
+# Hooks, Alias y trucos en Git
+## ¿Qué es un Hook?
+
+- Un hook o punto de enganche, es la posibilidad de ejecutar una acción o script cada vez que ocurre un evente determinado en Git.
+- Los hooks en sirven para personalizar el comportamiento de Git y automatizar tareas en ciertos puntos del flujo de trabajo de desarrollo.
+- Hooks del lado del clietnte.
+- Hooks del lado del servidor.
+
+## Hooks del lado del cliente
+Sólo afecta al repositorio local que los contiene.
+#### \*Principales tipos de hooks:
+- **pre-commit:** Son acciones o scripts que se ejecutan antes de realizar un commit.
+- **prepare-commit-msg:** Sirve para modificar el mensaje del commit o añadir cualquer información extra.
+- **commit-msg:** Es el sitio perfecto para hacer todas las comprobaciones pertinentes al mensaje.
+- **post-commit:** Se ejecuta después de que se ha hecho un commit. Puede ser útil para notificar a otros servicios o usuarios sobre el nuevo commit.
+- **pre-push:** Antes de sincronizar con el repositorio remoto.
+- **post-checkout:** Se ejecuta después de que se ha hecho un checkout. Puede ser útil para configurar el entorno de trabajo en función de la rama actual.
+- **post-merge:** Se ejecuta después de que una fusión (merge) ha sido realizada con éxito.
+
+## Hooks del lado del servidor
+- **pre-receive:** Se ejecuta cada vez que se recibe un push en el servidor antes de que se actualice cualquier referencia.
+- **update:** Se ejecuta para cada rama que se está actualizando en un push.
+- **post-receive:** Se ejecuta después de que todas las referencias se han actualizado en un push. 
+
+### Creando mi primer hook
+Para crear un propio hook sólo tienes que crear un archivo
+nombre-del-hook en la carpeta .git/hooks y en él poner el
+código que quieras que se ejecute. Puedes usar todo tipo de
+intérpretes de lenguaje de programación como bash, node,
+python, perl, etc.
+
+### ¿Qué es un Alias?
+Permiten definir una serie de comandos que pueden ser usados en lugar de nombres completos. Convertir algo largo en algo corto.
+
+#### \*Comando para crear un alias
+- **git config --global alias.(nombre del alias) "Comando a ejecutar"**
+**Ejemplo:**
+git config --global alias.wo log --oneline
+
+- **git config --global --unset alias.(nombre del alias):** Eliminar el alias creado.
+
+### Trucos en Git
+#### \*Comandos:
+#### Guardar tus cambios temporalmente
+- **stash**
+- **stash -u**
+- **stash pop**
+
+#### Aplicar cambios de commits en específico
+- **git cherry-pick (hash)**
+
+#### Detectar qué commit es el que ha introducido un bug
+- **git bisect**
+- **git bisect start**
+- **git bisect bad**
+- **git bisect good**
+- **git bisect reset**
+
+#### Cambiar el nombre de un commit
+- **git commit --amend -m (descripción del commit)**
+
+#### Recupera un archivoen concreto de otra rama o commit
+- **git checkout (hash) (archivo)**
